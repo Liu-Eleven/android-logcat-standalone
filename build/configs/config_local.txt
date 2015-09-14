@@ -1,0 +1,8 @@
+INCLUDE(${CMAKE_CONFIG_ROOT}/config_default.txt)
+
+set(CMAKE_C_FLAGS "-m32 ${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "-m32 ${CMAKE_CXX_FLAGS}")
+
+set(CMAKE_TARGET_ARCH x86)
+
+set(CMAKE_BINDER_LINKLIBS pthread)

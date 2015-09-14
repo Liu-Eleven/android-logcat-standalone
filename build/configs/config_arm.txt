@@ -1,0 +1,9 @@
+INCLUDE(${CMAKE_CONFIG_ROOT}/config_default.txt)
+
+set(CMAKE_C_COMPILER "arm-none-linux-gnueabi-gcc")
+set(CMAKE_CXX_COMPILER "arm-none-linux-gnueabi-g++")
+
+set(CMAKE_C_FLAGS "-fPIC -fexceptions -march=armv7-a  -Wl,-v ${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "-fPIC  -fno-rtti  -march=armv7-a -fexceptions -Wl,-v  ${CMAKE_CXX_FLAGS}")
+
+set(CMAKE_TEST_LINKLIBS pthread)

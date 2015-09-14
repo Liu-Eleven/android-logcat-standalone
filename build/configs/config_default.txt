@@ -1,0 +1,23 @@
+unset(CMAKE_C_COMPILER)
+unset(CMAKE_CXX_COMPILER)
+
+#usually all these should be defined
+#-DHAVE_SYS_UIO_H has bits/uio.h
+#-DHAVE_PTHREADS has pthread.h
+#-DHAVE_ENDIAN_H has endian.h
+#-DHAVE_OFF64_T has off64_t
+#-DHAVE_POSIX_FILEMAP has mmap
+#-DOS_PATH_SEPARATOR='/'
+#-DANDROID_SMP=1
+
+#define this on 32bit Kernel and do NOT define this on 64bit kernel even if you want to run 32bit apps.
+#-DBINDER_IPC_32BIT=1   
+
+set(CMAKE_C_FLAGS "-g -Werror -DBINDER_IPC_32BIT -DHAVE_ANDROID_OS -DHAVE_SYS_UIO_H -DHAVE_PTHREADS -DHAVE_ENDIAN_H -DHAVE_OFF64_T -DHAVE_POSIX_FILEMAP -DOS_PATH_SEPARATOR=\\'/\\' -DANDROID_SMP=1")
+set(CMAKE_CXX_FLAGS ${CMAKE_C_FLAGS})
+
+#arm,mips,x86
+set(CMAKE_TARGET_ARCH arm)
+
+unset(CMAKE_BINDER_LINKLIBS)
+unset(CMAKE_TEST_LINKLIBS)

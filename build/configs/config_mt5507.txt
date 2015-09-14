@@ -1,0 +1,10 @@
+INCLUDE(${CMAKE_CONFIG_ROOT}/config_default.txt)
+
+set(CMAKE_C_COMPILER "/opt/mtk/mtk5507_Bionic/tcl_tool_chain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-gcc")
+set(CMAKE_CXX_COMPILER "/opt/mtk/mtk5507_Bionic/tcl_tool_chain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-g++")
+
+set(CMAKE_C_FLAGS "-fexceptions -Wl,-v -march=armv7-a -mfloat-abi=softfp -mfpu=neon ${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "-fno-rtti -fexceptions -Wl,-v -march=armv7-a -mfloat-abi=softfp -mfpu=neon ${CMAKE_CXX_FLAGS}")
+
+
+set(CMAKE_TEST_LINKLIBS supc++)
