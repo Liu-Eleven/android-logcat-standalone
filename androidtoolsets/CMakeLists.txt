@@ -34,11 +34,17 @@ SET(LIB_Utils_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/libutils/Static.cpp
 )
 
+#libbionic
+SET(LIB_Bionic_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/bionic/strlcat.c
+)
+
 ADD_LIBRARY(AndroidToolsets STATIC 
     ${LIB_Log_SRC}
     ${LIB_Sysutils_SRC}
     ${LIB_Cutils_SRC}
     ${LIB_Utils_SRC}
+    ${LIB_Bionic_SRC}
 )
 
 

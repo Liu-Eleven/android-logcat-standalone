@@ -13,4 +13,4 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/build/cmakes/)
 #add moduels to compile
 
 ADD_SUBDIRECTORY(androidtoolsets) 
-#ADD_SUBDIRECTORY(test) 
+ADD_SUBDIRECTORY(test) 
