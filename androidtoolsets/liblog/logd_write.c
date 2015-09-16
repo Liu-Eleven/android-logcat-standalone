@@ -124,7 +124,7 @@ static int __write_to_log_initialize()
         struct sockaddr_un un;
         memset(&un, 0, sizeof(struct sockaddr_un));
         un.sun_family = AF_UNIX;
-        strcpy(un.sun_path, "/dev/socket/logdw");
+        strcpy(un.sun_path, "/tmp/logdw"/*"/dev/socket/logdw"*/);
 
         if (connect(i, (struct sockaddr *)&un, sizeof(struct sockaddr_un)) < 0) {
             ret = -errno;
