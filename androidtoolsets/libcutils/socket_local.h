@@ -18,7 +18,9 @@
 #define __SOCKET_LOCAL_H
 
 #define FILESYSTEM_SOCKET_PREFIX "/tmp/" 
-#define ANDROID_RESERVED_SOCKET_PREFIX "/dev/socket/"
+ 
+//lihui02 move it to tmp since /dev/socket is usually not writable on mount Linux
+#define ANDROID_RESERVED_SOCKET_PREFIX "/tmp/"  //"/dev/socket/"
 
 /*
  * Set up a given sockaddr_un, to have it refer to the given
