@@ -140,10 +140,10 @@ int main() {
         fdDmesg = open("/dev/kmsg", O_WRONLY);
     }
 
+#endif
     if (drop_privs() != 0) {
         return -1;
     }
-#endif
 
     // Serves the purpose of managing the last logs times read on a
     // socket connection, and as a reader lock on a range of log
