@@ -212,6 +212,11 @@ int main() {
     }
 #endif
 
+    //lihui02 added
+    chmod("/tmp/logd", 0666);
+    chmod("/tmp/logdw", 0777);
+    chmod("/tmp/logdr", 0666);
+
     pause();
     exit(0);
 }
