@@ -37,6 +37,13 @@
 #include <stdlib.h>
 #include <cutils/sockets.h>
 #include <unistd.h>
+#include <time.h>
+
+static int _get_tickcount(void) {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC,&ts);
+    return (ts.tv_sec * 1000) + (ts.tv_nsec/1000000);
+}
 
 /*
  * Note: also accepts 0-9 priorities
@@ -79,10 +86,12 @@ static android_LogPriority filterCharToPri (char c)
 
 static int usage(const char *s)
 {
-    fprintf(stderr, "USAGE: %s [-p priorityChar] [-t tag] message\n", s);
+    fprintf(stderr, "USAGE: %s [-p priorityChar] [-t tag] [-r repeatTimes] [-v] message\n", s);
 
     fprintf(stderr, "\tpriorityChar should be one of:\n"
                         "\t\tv,d,i,w,e\n");
+
+    fprintf(stderr, "\tv means verbose\n");
     exit(-1);
 }
 
@@ -96,13 +105,15 @@ int main(int argc, char *argv[])
     const char *tag = "log";
     char buffer[4096];
     int i;
+    int repeats = 1;
+    int verbose = 0;
 
     priority = ANDROID_LOG_INFO;
 
     for (;;) {
         int ret;
 
-        ret = getopt(argc, argv, "t:p:h");
+        ret = getopt(argc, argv, "t:p:r:vh");
 
         if (ret < 0) {
             break;
@@ -119,6 +130,17 @@ int main(int argc, char *argv[])
                     usage(argv[0]);                    
                 }
             break;
+
+            case 'r':
+                repeats = atoi(optarg);
+                if(repeats < 0) {
+                    usage(argv[0]);
+                }
+                break;
+
+            case 'v':
+                verbose = 1;
+                break;
 
             case 'h':
                 usage(argv[0]);
@@ -141,7 +163,17 @@ int main(int argc, char *argv[])
         usage(argv[0]);
     }
 
-    __android_log_print(priority, tag, "%s", buffer);
+    int starttime = _get_tickcount();
+
+    for(i=0;i<repeats;i++) {
+        __android_log_print(priority, tag, "%s", buffer);
+    }
+
+    int endtime = _get_tickcount();
+
+    if(verbose) {
+        printf("log %d times used %d ms\n",repeats,endtime - starttime);
+    }
 
     return 0;
 }
