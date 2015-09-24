@@ -14,6 +14,9 @@
 ** limitations under the License.
 */
 
+//lihui added for TEMP_FAILURE_RETRY in unistd.h
+#define _GNU_SOURCE
+
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
@@ -30,20 +33,6 @@
 #include <cutils/sockets.h>
 #include <log/log.h>
 #include <log/logger.h>
-
-//lihui02 added
-#ifndef PAGE_SIZE
-#define PAGE_SIZE 4096
-#endif
-
-/* Used to retry syscalls that can return EINTR. */
-#define TEMP_FAILURE_RETRY(exp) ({         \
-    __typeof__(exp) _rc;                   \
-    do {                                   \
-        _rc = (exp);                       \
-    } while (_rc == -1 && errno == EINTR); \
-    _rc; })
-//lihui02 added
 
 /* branchless on many architectures. */
 #define min(x,y) ((y) ^ (((x) ^ (y)) & -((x) < (y))))
@@ -316,7 +305,8 @@ static ssize_t send_log_msg(struct logger *logger,
     while ((ret = TEMP_FAILURE_RETRY(read(sock, cp, len))) > 0) {
         struct pollfd p;
 
-        if (((size_t)ret == len) || (buf_size < PAGE_SIZE)) {
+        //lihui: change PAGE_SIZE to getpagesize
+        if (((size_t)ret == len) || (buf_size < getpagesize())) {
             break;
         }
 

@@ -6,7 +6,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <stdlib.h>
+#include <cstdlib>  //lihui: for free
 
 #define LOG_TAG "SocketClient"
 #include <cutils/log.h>

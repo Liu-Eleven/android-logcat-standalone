@@ -21,13 +21,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <sys/capability.h>
+//#include <sys/capability.h>   //lihui: no auditd and no capability yet
 #include <sys/prctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
-//#include <cutils/properties.h>
+//#include <cutils/properties.h>    //lihui, no property on Linux
 
 #include "private/android_filesystem_config.h"
 #include "CommandListener.h"
@@ -84,7 +84,7 @@ static int drop_privs() {
         return -1;
     }
 
-
+//lihui: no auditd and no capability yet
 #if 0
     struct __user_cap_header_struct capheader;
     struct __user_cap_data_struct capdata[2];
@@ -109,6 +109,7 @@ static int drop_privs() {
     return 0;
 }
 
+//lihui, no property on Linux
 #if 0
 // Property helper
 static bool property_get_bool(const char *key, bool def) {
@@ -132,6 +133,7 @@ static bool property_get_bool(const char *key, bool def) {
 // space logger.  Additional transitory per-client threads are created
 // for each reader once they register.
 int main() {
+//lihui: no auditd and no capability yet
 #if 0
     bool auditd = fproperty_get_bool("logd.auditd", true);
 
@@ -156,6 +158,7 @@ int main() {
 
     LogBuffer *logBuf = new LogBuffer(times);
 
+//lihui, no property on Linux
 #if 0
     if (property_get_bool("logd.statistics.dgram_qlen", false)) {
         logBuf->enableDgramQlenStatistics();
@@ -201,6 +204,7 @@ int main() {
     // initiated log messages. New log entries are added to LogBuffer
     // and LogReader is notified to send updates to connected clients.
 
+//lihui: no auditd and no capability yet
 #if 0
     if (auditd) {
         // failure is an option ... messages are in dmesg (required by standard)
@@ -212,7 +216,14 @@ int main() {
     }
 #endif
 
-    //lihui02 added
+    /*lihui added, since android do that in init.rc but we can`t
+    service logd /system/bin/logd
+        class core
+        socket logd stream 0666 logd logd                  
+        socket logdr seqpacket 0666 logd logd
+        socket logdw dgram 0222 logd logd
+        seclabel u:r:logd:s0
+    */
     chmod("/tmp/logd", 0666);
     chmod("/tmp/logdw", 0777);
     chmod("/tmp/logdr", 0666);
