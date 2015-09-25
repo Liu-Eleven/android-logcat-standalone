@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-SET(CMAKE_CONFIG_ROOT ${PROJECT_SOURCE_DIR}/build/configs/)
+SET(CMAKE_CONFIG_ROOT ${PROJECT_SOURCE_DIR}/build/configs)
 INCLUDE(${CMAKE_CONFIG_ROOT}/config_$ENV{CMAKE_PLATFORM_NAME}.txt)
 
 #put output to out folder
