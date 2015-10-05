@@ -30,7 +30,7 @@
 #endif
 #include <time.h>
 #include <unistd.h>
-#include <sys/syscall.h>
+#include <sys/syscall.h>    //lihui for syscall
 
 #ifdef __BIONIC__
 #include <android/set_abort_message.h>
@@ -124,7 +124,7 @@ static int __write_to_log_initialize()
         struct sockaddr_un un;
         memset(&un, 0, sizeof(struct sockaddr_un));
         un.sun_family = AF_UNIX;
-        strcpy(un.sun_path, "/tmp/logdw"/*"/dev/socket/logdw"*/);
+        strcpy(un.sun_path, "/tmp/logdw"/*"/dev/socket/logdw"*/);   //lihui changed
 
         if (connect(i, (struct sockaddr *)&un, sizeof(struct sockaddr_un)) < 0) {
             ret = -errno;
@@ -207,7 +207,7 @@ static int __write_to_log_kernel(log_id_t log_id, struct iovec *vec, size_t nr)
 
     log_id_buf = log_id;
 
-    //lihui modify
+    //lihui, no gettid on Linux
     //tid = gettid();
     tid = syscall(SYS_gettid);
 

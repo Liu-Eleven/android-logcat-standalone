@@ -21,9 +21,9 @@
 #include <sys/user.h>
 #include <time.h>
 #include <unistd.h>
-#include <limits.h>
+#include <limits.h> //lihui,for ULONG_MAX
 
-//#include <cutils/properties.h>
+//#include <cutils/properties.h>    //lihui, no property on Linux
 #include <log/logger.h>
 
 #include "LogBuffer.h"
@@ -63,6 +63,7 @@ static bool valid_size(unsigned long value) {
     return value <= maximum;
 }
 
+//lihui: no property on Linux, remove them all
 #if 0
 static unsigned long property_get_size(const char *key) {
     char property[PROPERTY_VALUE_MAX];
@@ -100,6 +101,7 @@ LogBuffer::LogBuffer(LastLogTimes *times)
         , mTimes(*times) {
     pthread_mutex_init(&mLogElementsLock, NULL);
 
+//lihui: no property on Linux, remove them all and use default
 #if 0
     static const char global_tuneable[] = "persist.logd.size"; // Settings App
     static const char global_default[] = "ro.logd.size";       // BoardConfig.mk

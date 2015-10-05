@@ -15,7 +15,7 @@
  */
 
 #include <ctype.h>
-#include <stdlib.h>
+#include <cstdlib>  //lihui: for free
 
 #include <utils/String8.h>
 

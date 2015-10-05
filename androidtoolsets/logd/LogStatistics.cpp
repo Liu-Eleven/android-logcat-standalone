@@ -17,9 +17,8 @@
 #include <fcntl.h>
 #include <stdarg.h>
 #include <time.h>
-#include <cstdlib>
-#include <sys/types.h>
-#include <signal.h>
+#include <cstdlib>  //lihui: for free
+#include <signal.h> //lihui: for kill
 
 
 #include <log/logger.h>
