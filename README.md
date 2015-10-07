@@ -41,36 +41,44 @@ end
 ## worklist
 
 ### libcutils
-socket_local.h:
-1. redirect macro from /dev/socket/ to /tmp/；
+**socket_local.h**
+
+1. redirect macro from /dev/socket/ to /tmp/;
 
 ### liblog
-log_read.c:
+**log_read.c**
+
 1. add _GNU_SOURCE macro in order to use TEMP_FAILURE_RETRY(redo the system call that get EINTR error                    until it success); 
 2. redirect macro from /dev/socket/ to /tmp/;
 3. using getpagesize() to get page size(in unistd.h), don't use PAGE_SIZE macro;
 
-logd_write.c:
+**logd_write.c**
+
 1. redirect macro from /dev/socket/logdw to /tmp/logdw;
-2. include <sys/syscall.h> to usesyscall(SYS_gettid) instead of gettid() to get the true thread id;
+2. include \<sys/syscall.h\> to use syscall(SYS_gettid) instead of gettid() to get the true thread id;
 
 ### libsysutils/src
-SocketClient.cpp:
-1. include <cstdlib> in order to use malloc() and free();
+**SocketClient.cpp**
+
+1. include \<cstdlib\> in order to use malloc() and free();
 
 ### logd
-LogStatistics.cpp:
-1. ninclude <cstdlib> and <signal.h> in order to use free() and kill();
+**LogStatistics.cpp**
 
-LogWhiteBlackList.cpp:
-1. include <cstdlib> in order to use free();
+1. include \<cstdlib\> and \<signal.h\> in order to use free() and kill();
 
-LogBuffer.cpp:
-1. include <limits.h>, delete <cutils/properties.h>;
+**LogWhiteBlackList.cpp**
+
+1. include \<cstdlib\> in order to use free();
+
+**LogBuffer.cpp**
+
+1. include \<limits.h\>, delete \<cutils/properties.h\>;
 2. delete property_get_size()(no any properties);
 3. delete properties related codes in LogBuffer constructed function, onlu use setSize() to set log buffer size;
 
-main.cpp:
+**main.cpp**
+
 1. delete two useless head files;
 2. delete process capability related codes in drop_privs()(no use of android capability on linux);
 3. delete property_get_bool(), no any properties;
@@ -78,7 +86,8 @@ main.cpp:
 5. add chmod() for logd & logdr & logdw in main to make them can be read and writed for all users;
 
 ### toolbox
-log.c:
+**log.c**
+
 1. add method to count time;
 2. change usage() for new options;
 3. change log_main() to main() to build a command;
