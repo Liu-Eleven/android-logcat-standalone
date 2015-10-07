@@ -30,51 +30,51 @@
 1. the read device:init the basic device(system, main e.t.c) if it matches, and then add the appointed device;
 2. open the device and get prepared for read, call android_logger_clear() e.t.c, means call socket_local_client("logd", ...) get a socket connected, and send commands buffer to socket;(liblog/log_read.c)
 3. loop(all devices contains a logger_list in order to know who is reading)
-call android_logger_list_read():
-if logger_list->sock isn't inited, call socket_local_client("logdr", ...) get a socket connected, and send signal message to notify server;
-using recv() read log entries from socket to get the log_msg;(liblog/log_read.c)
-call android::processBuffer() to read log buffer from log_msg, and then write buffer data to fd(fd is appointed or default to file cmdline);
-call android_log_printLogLine();(liblog/logprint.c)
-system call write() write data to fd;
+  call android_logger_list_read():
+  if logger_list->sock isn't inited, call socket_local_client("logdr", ...) get a socket connected, and send signal   message to notify server;
+  using recv() read log entries from socket to get the log_msg;(liblog/log_read.c)
+  call android::processBuffer() to read log buffer from log_msg, and then write buffer data to fd(fd is appointed or default to file cmdline);
+  call android_log_printLogLine();(liblog/logprint.c)
+  system call write() write data to fd;
 end
 
 ## worklist
 
 1. libcutils:
-    socket_local.h:
-      redirect macro from /dev/socket/ to /tmp/；
+      socket_local.h:
+        redirect macro from /dev/socket/ to /tmp/；
 2. liblog:
-    log_read.c:
-      add _GNU_SOURCE macro in order to use TEMP_FAILURE_RETRY(redo the system call that get EINTR error                    until it success); 
-      redirect macro from /dev/socket/ to /tmp/;
-      using getpagesize() to get page size(in unistd.h), don't use PAGE_SIZE macro;
-    logd_write.c:
-      redirect macro from /dev/socket/logdw to /tmp/logdw;
-      include <sys/syscall.h> to usesyscall(SYS_gettid) instead of gettid() to get the true thread id;
+      log_read.c:
+        add _GNU_SOURCE macro in order to use TEMP_FAILURE_RETRY(redo the system call that get EINTR error                    until it success); 
+        redirect macro from /dev/socket/ to /tmp/;
+        using getpagesize() to get page size(in unistd.h), don't use PAGE_SIZE macro;
+      logd_write.c:
+        redirect macro from /dev/socket/logdw to /tmp/logdw;
+        include <sys/syscall.h> to usesyscall(SYS_gettid) instead of gettid() to get the true thread id;
 3. libsysutils/src:
-    SocketClient.cpp:
-      include <cstdlib> in order to use malloc() and free();
+      SocketClient.cpp:
+        include <cstdlib> in order to use malloc() and free();
 4. logd:
-    LogStatistics.cpp:
-      include <cstdlib> and <signal.h> in order to use free() and kill();
-    LogWhiteBlackList.cpp:
-      include <cstdlib> in order to use free();
-    LogBuffer.cpp:
-      include <limits.h>, delete <cutils/properties.h>;
-      delete property_get_size()(no any properties);
-      delete properties related codes in LogBuffer constructed function, onlu use setSize() to set log buffer size;
-    main.cpp:
-      delete two useless head files;
-      delete process capability related codes in drop_privs()(no use of android capability on linux);
-      delete property_get_bool(), no any properties;
-      delete process capability related codes in main;
-      add chmod() for logd & logdr & logdw in main to make them can be read and writed for all users;
+      LogStatistics.cpp:
+        include <cstdlib> and <signal.h> in order to use free() and kill();
+      LogWhiteBlackList.cpp:
+        include <cstdlib> in order to use free();
+      LogBuffer.cpp:
+        include <limits.h>, delete <cutils/properties.h>;
+        delete property_get_size()(no any properties);
+        delete properties related codes in LogBuffer constructed function, onlu use setSize() to set log buffer size;
+      main.cpp:
+        delete two useless head files;
+        delete process capability related codes in drop_privs()(no use of android capability on linux);
+        delete property_get_bool(), no any properties;
+        delete process capability related codes in main;
+        add chmod() for logd & logdr & logdw in main to make them can be read and writed for all users;
 5. toolbox:
-    log.c:
-      add method to count time;
-      change usage() for new options;
-      change log_main() to main() to build a command;
-      change main() for new options and show count time result;
+      log.c:
+        add method to count time;
+        change usage() for new options;
+        change log_main() to main() to build a command;
+        change main() for new options and show count time result;
 
 ## references
 **android source code**
