@@ -144,6 +144,7 @@ int main() {
 
 #endif
     if (drop_privs() != 0) {
+        perror("logd start failed");
         return -1;
     }
 
@@ -225,9 +226,10 @@ int main() {
         seclabel u:r:logd:s0
     */
     chmod("/tmp/logd", 0666);
-    chmod("/tmp/logdw", 0777);
+    chmod("/tmp/logdw", 0666);  //don't need executable
     chmod("/tmp/logdr", 0666);
 
+    printf("--------- logd start\n");   //show start message
     pause();
     exit(0);
 }
