@@ -40,41 +40,49 @@ end
 
 ## worklist
 
-1. libcutils:
-      socket_local.h:
-        redirect macro from /dev/socket/ to /tmp/；
-2. liblog:
-      log_read.c:
-        add _GNU_SOURCE macro in order to use TEMP_FAILURE_RETRY(redo the system call that get EINTR error                    until it success); 
-        redirect macro from /dev/socket/ to /tmp/;
-        using getpagesize() to get page size(in unistd.h), don't use PAGE_SIZE macro;
-      logd_write.c:
-        redirect macro from /dev/socket/logdw to /tmp/logdw;
-        include <sys/syscall.h> to usesyscall(SYS_gettid) instead of gettid() to get the true thread id;
-3. libsysutils/src:
-      SocketClient.cpp:
-        include <cstdlib> in order to use malloc() and free();
-4. logd:
-      LogStatistics.cpp:
-        include <cstdlib> and <signal.h> in order to use free() and kill();
-      LogWhiteBlackList.cpp:
-        include <cstdlib> in order to use free();
-      LogBuffer.cpp:
-        include <limits.h>, delete <cutils/properties.h>;
-        delete property_get_size()(no any properties);
-        delete properties related codes in LogBuffer constructed function, onlu use setSize() to set log buffer size;
-      main.cpp:
-        delete two useless head files;
-        delete process capability related codes in drop_privs()(no use of android capability on linux);
-        delete property_get_bool(), no any properties;
-        delete process capability related codes in main;
-        add chmod() for logd & logdr & logdw in main to make them can be read and writed for all users;
-5. toolbox:
-      log.c:
-        add method to count time;
-        change usage() for new options;
-        change log_main() to main() to build a command;
-        change main() for new options and show count time result;
+### libcutils
+socket_local.h:
+1. redirect macro from /dev/socket/ to /tmp/；
+
+### liblog
+log_read.c:
+1. add _GNU_SOURCE macro in order to use TEMP_FAILURE_RETRY(redo the system call that get EINTR error                    until it success); 
+2. redirect macro from /dev/socket/ to /tmp/;
+3. using getpagesize() to get page size(in unistd.h), don't use PAGE_SIZE macro;
+
+logd_write.c:
+1. redirect macro from /dev/socket/logdw to /tmp/logdw;
+2. include <sys/syscall.h> to usesyscall(SYS_gettid) instead of gettid() to get the true thread id;
+
+### libsysutils/src
+SocketClient.cpp:
+1. include <cstdlib> in order to use malloc() and free();
+
+### logd
+LogStatistics.cpp:
+1. ninclude <cstdlib> and <signal.h> in order to use free() and kill();
+
+LogWhiteBlackList.cpp:
+1. include <cstdlib> in order to use free();
+
+LogBuffer.cpp:
+1. include <limits.h>, delete <cutils/properties.h>;
+2. delete property_get_size()(no any properties);
+3. delete properties related codes in LogBuffer constructed function, onlu use setSize() to set log buffer size;
+
+main.cpp:
+1. delete two useless head files;
+2. delete process capability related codes in drop_privs()(no use of android capability on linux);
+3. delete property_get_bool(), no any properties;
+4. delete process capability related codes in main;
+5. add chmod() for logd & logdr & logdw in main to make them can be read and writed for all users;
+
+### toolbox
+log.c:
+1. add method to count time;
+2. change usage() for new options;
+3. change log_main() to main() to build a command;
+4. change main() for new options and show count time result;
 
 ## references
 **android source code**
