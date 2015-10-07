@@ -5,6 +5,7 @@
 ### logd
 **logd/main.cpp**
 1. system calls such as sched_setscheduler need root authority, so must use "sudo" to run "./logd" or it finished with return -1;
+***
 2. init LogBuffer that holds the log entries and inited with LastLogTimes;
 3. call LogReader inited with LogBuffer and create socket_local_server(PREFIX"logdr", ...), and then if new log entries come to LogBuffer, it will be notified and send data from LogBuffer to the socket, a client(logcat) can read from the socket after connects and send signal message;(logd/LogReader.cpp)
 4. call LogListener inited with LogBuffer and LogReader and creates socket_local_server(PREFIX"logdw", ...), and then if recvmsg() from socket, it add log entries to the LogBuffer and notify LogReader; (logd/LogListener.cpp)
