@@ -49,7 +49,7 @@ static bool valid_size(unsigned long value) {
 
     long pagesize = sysconf(_SC_PAGESIZE);
     if (pagesize <= 1) {
-        pagesize = PAGE_SIZE;
+        pagesize = getpagesize();   //lihui: change PAGE_SIZE to getpagesize
     }
 
     // maximum memory impact a somewhat arbitrary ~3%
