@@ -62,7 +62,7 @@ int WEAK socket_local_client(const char *name, int namespaceId, int type)
 /* Private copy of ../libcutils/socket_local.h prevent library loops */
 #define FILESYSTEM_SOCKET_PREFIX "/tmp/"
 
-//lihui02 move it to tmp since /dev/socket is usually not writable on mount Linux
+//lihui02 move it to tmp since /dev/socket is usually not writable on most Linux
 #define ANDROID_RESERVED_SOCKET_PREFIX "/tmp/"  //"/dev/socket/"
 /* End of ../libcutils/socket_local.h */
 

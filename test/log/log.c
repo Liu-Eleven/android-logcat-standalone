@@ -165,14 +165,17 @@ int main(int argc, char *argv[])
 
     int starttime = _get_tickcount();
 
-    for(i=0;i<repeats;i++) {
-        __android_log_print(priority, tag, "%s", buffer);
+    for(i = 0; i < repeats; i++) {
+        if (0 > __android_log_print(priority, tag, "%s", buffer)) {
+            perror("log write failed");
+            break;
+        }
     }
 
     int endtime = _get_tickcount();
 
     if(verbose) {
-        printf("log %d times used %d ms\n",repeats,endtime - starttime);
+        printf("log %d times used %d ms\n", i, endtime - starttime);
     }
 
     return 0;
